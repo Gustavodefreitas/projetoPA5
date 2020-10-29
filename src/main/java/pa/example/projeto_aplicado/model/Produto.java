@@ -1,7 +1,22 @@
 package pa.example.projeto_aplicado.model;
 
-public class Produto {
-    private int id;
+import java.io.Serializable;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
+public class Produto implements Serializable{
+
+    private static final long serialVersionUID = 1L;
+
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+    
     private String modelo;
     private String cor;
     private String descricao;
@@ -9,8 +24,25 @@ public class Produto {
     private int quantidade_estoque;
 
 
-    public int getCodigo(){
-        return id;
+    public void atualizarProduto(Produto atual){
+
+        if(atual.getId() != 0)
+            this.id = atual.getId();
+
+        if(atual.getCor() != null)
+            this.cor = atual.getCor();
+        
+        if(atual.getDescricao() != null)
+            this.descricao = atual.getDescricao();
+
+        if(atual.getModelo() != null)
+            this.modelo = atual.getModelo();
+
+        if(atual.getVolume() != 0)
+            this.volume = atual.getVolume();  
+        
+        if(atual.getQuantidade() != 0)
+            this.quantidade_estoque = atual.getQuantidade();    
     }
 
     public String getModelo(){
@@ -33,11 +65,6 @@ public class Produto {
         return quantidade_estoque;
     }
 
-
-    public void setCodigo(int codigo){
-        this.id = codigo;
-    }
-
     public void setModelo(String model){
         this.modelo = model;
     }
@@ -57,4 +84,13 @@ public class Produto {
     public void setQuantidade(int qtd){
         this.quantidade_estoque = qtd;
     }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
 }
