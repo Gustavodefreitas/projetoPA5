@@ -16,14 +16,13 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import pa.example.projeto_aplicado.model.Produto;
-import pa.example.projeto_aplicado.service.Systemservice;
+import pa.example.projeto_aplicado.service.Produtoservice;
 
 @RequestMapping("/produtos")
 @RestController
-public class Controle {
-
+public class Controleproduto {
     @Autowired
-    private Systemservice srvc;
+    private Produtoservice srvc;
 
     @GetMapping()
     public ResponseEntity<Iterable<Produto>> listar_produtos_estoque() {
@@ -47,7 +46,7 @@ public class Controle {
     public ResponseEntity<Void> cadastrarProduto(@RequestBody Produto produto, HttpServletRequest request,
             UriComponentsBuilder builder) {
         produto = srvc.salvarProduto(produto);
-        UriComponents uriComponents = builder.path(request.getRequestURI() + "/" + produto.getId()).build();
+        UriComponents uriComponents = builder.path(request.getRequestURI() + "/" + produto.getIdproduto()).build();
 
         return ResponseEntity.created(uriComponents.toUri()).build();
     }
@@ -65,5 +64,4 @@ public class Controle {
         
         return ResponseEntity.ok(produto);
     }
-    
 }

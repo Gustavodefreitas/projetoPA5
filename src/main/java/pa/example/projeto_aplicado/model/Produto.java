@@ -2,6 +2,7 @@ package pa.example.projeto_aplicado.model;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,19 +16,22 @@ public class Produto implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
-    
-    private String modelo;
-    private String cor;
+    private long idproduto;
+    @Column(nullable = false)
     private String descricao;
+    @Column(nullable = false)
+    private String tipo;
+    @Column(nullable = false)
+    private String marca;
+    @Column(nullable = false)
+    private String cor;
+    @Column(nullable = false)
+    private float peso;
+    @Column(nullable = false)
     private float volume;
-    private int quantidade_estoque;
 
 
     public void atualizarProduto(Produto atual){
-
-        if(atual.getId() != 0)
-            this.id = atual.getId();
 
         if(atual.getCor() != null)
             this.cor = atual.getCor();
@@ -35,62 +39,75 @@ public class Produto implements Serializable{
         if(atual.getDescricao() != null)
             this.descricao = atual.getDescricao();
 
-        if(atual.getModelo() != null)
-            this.modelo = atual.getModelo();
+        if(atual.getMarca() != null)
+            this.marca = atual.getMarca();
 
         if(atual.getVolume() != 0)
             this.volume = atual.getVolume();  
         
-        if(atual.getQuantidade() != 0)
-            this.quantidade_estoque = atual.getQuantidade();    
+        if(atual.getPeso() != 0)
+            this.peso = atual.getPeso();  
+            
+        if(atual.getTipo() != null)
+            this.tipo = atual.getTipo(); 
     }
 
-    public String getModelo(){
-        return modelo;
+    public long getIdproduto() {
+        return idproduto;
     }
 
-    public String getCor(){
-        return cor;
+    public void setIdproduto(long idproduto) {
+        this.idproduto = idproduto;
     }
 
-    public String getDescricao(){
+    public String getDescricao() {
         return descricao;
     }
 
-    public float getVolume(){
-        return volume;
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
-    public int getQuantidade(){
-        return quantidade_estoque;
+    public String getTipo() {
+        return tipo;
     }
 
-    public void setModelo(String model){
-        this.modelo = model;
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
-    public void setCor(String cor){
+    public String getMarca() {
+        return marca;
+    }
+
+    public void setMarca(String marca) {
+        this.marca = marca;
+    }
+
+    public String getCor() {
+        return cor;
+    }
+
+    public void setCor(String cor) {
         this.cor = cor;
     }
 
-    public void setDescricao(String desc){
-        this.descricao = desc;
+    public float getPeso() {
+        return peso;
     }
 
-    public void setVolume(Float vol){
-        this.volume = vol;
+    public void setPeso(float peso) {
+        this.peso = peso;
     }
 
-    public void setQuantidade(int qtd){
-        this.quantidade_estoque = qtd;
+    public float getVolume() {
+        return volume;
     }
 
-    public long getId() {
-        return id;
+    public void setVolume(float volume) {
+        this.volume = volume;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
+
 
 }
