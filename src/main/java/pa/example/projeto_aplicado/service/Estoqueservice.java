@@ -8,16 +8,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import pa.example.projeto_aplicado.model.Estoque;
-import pa.example.projeto_aplicado.model.Produto;
 import pa.example.projeto_aplicado.repository.Estoquerepository;
 
 @Service
 public class Estoqueservice {
     @Autowired
     private Estoquerepository estoques;
-    @Autowired
-    private Produtoservice srvc;
-
 
     public Iterable<Estoque> getAllEstoque(){
         return estoques.findAll();
