@@ -30,6 +30,9 @@ public class Estoque implements Serializable{
     @OneToOne
     private Produto produto;
 
+    @OneToOne
+    private Cliente cliente;
+
 
     public void atualizarEstoque(Estoque atual){
 
@@ -94,6 +97,14 @@ public class Estoque implements Serializable{
 
     public void setProduto(Produto produto) {
         this.produto = produto;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 
 

@@ -18,7 +18,7 @@ public class Dataconfig {
         dataSource.setDriverClassName("org.postgresql.Driver");
         dataSource.setUrl("jdbc:postgresql://localhost/postgres"); 
         dataSource.setUsername("postgres");
-        dataSource.setPassword(""); 
+        dataSource.setPassword("joao.costa12"); 
         return dataSource;
     }
 
