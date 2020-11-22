@@ -20,7 +20,7 @@ import pa.example.projeto_aplicado.service.Produtoservice;
 
 @RequestMapping("/produtos")
 @RestController
-public class Controleproduto {
+public class ControleProduto{
     @Autowired
     private Produtoservice srvc;
 

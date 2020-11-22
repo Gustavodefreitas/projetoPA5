@@ -1,12 +1,18 @@
 package pa.example.projeto_aplicado.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-import javax.persistence.Column;
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Cliente implements Serializable{
@@ -17,41 +23,28 @@ public class Cliente implements Serializable{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long idcliente;
 
-    @Column(nullable = false)
     private String nome;
-    @Column(nullable = false)
+    private String email;
     private String cnpj;
-    @Column(nullable = false)
-    private String pais;
-    @Column(nullable = false)
-    private String cep;
-    @Column(nullable = false)
-    private String endereco;
-    @Column(nullable = false)
-    private String contato;
+
+    @ElementCollection
+    @CollectionTable(name = "telefone")
+    private Set<String> telefones = new HashSet<>();
+
+    @OneToMany(mappedBy = "cliente")
+    private List<Estoque> estoques = new ArrayList<>();
+    
+    @OneToMany(mappedBy = "cliente")
+    private List<Endereco> enderecos = new ArrayList<>();
 
 
-    public void atualizarCliente(Cliente atual){
-
-        if(atual.getNome() != null)
-            this.nome = atual.getNome();
-        
-        if(atual.getCnpj() != null)
-            this.cnpj = atual.getCnpj();
-
-        if(atual.getCep() != null)
-            this.cep = atual.getCep();
-
-        if(atual.getEndereco() != null)
-            this.endereco = atual.getEndereco();  
-         
-        if(atual.getContato() != null)
-            this.contato = atual.getContato();     
-
-        if(atual.getPais() != null)
-            this.pais= atual.getPais();      
+    public long getIdcliente() {
+        return idcliente;
     }
 
+    public void setIdcliente(long idcliente) {
+        this.idcliente = idcliente;
+    }
 
     public String getNome() {
         return nome;
@@ -59,6 +52,14 @@ public class Cliente implements Serializable{
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getCnpj() {
@@ -69,44 +70,63 @@ public class Cliente implements Serializable{
         this.cnpj = cnpj;
     }
 
-    public String getCep() {
-        return cep;
+    public Set<String> getTelefones() {
+        return telefones;
     }
 
-    public void setCep(String cep) {
-        this.cep = cep;
+    public void setTelefones(Set<String> telefones) {
+        this.telefones = telefones;
     }
 
-    public String getEndereco() {
-        return endereco;
+	public List<Estoque> getEstoques() {
+		return estoques;
+	}
+
+	public void setEstoques(List<Estoque> estoques) {
+		this.estoques = estoques;
+	}
+
+	public List<Endereco> getEnderecos() {
+		return enderecos;
+	}
+
+	public void setEnderecos(List<Endereco> enderecos) {
+		this.enderecos = enderecos;
+	}
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (int) (idcliente ^ (idcliente >>> 32));
+        return result;
     }
 
-    public void setEndereco(String endereco) {
-        this.endereco = endereco;
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Cliente other = (Cliente) obj;
+        if (idcliente != other.idcliente)
+            return false;
+        return true;
     }
 
-    public String getContato() {
-        return contato;
-    }
-
-    public void setContato(String contato) {
-        this.contato = contato;
-    }
-
-    public long getIdcliente() {
-        return idcliente;
-    }
-
-    public void setIdcliente(long idcliente) {
+    public Cliente(long idcliente, String nome, String email, String cnpj, Set<String> telefones) {
         this.idcliente = idcliente;
+        this.nome = nome;
+        this.email = email;
+        this.cnpj = cnpj;
+        this.telefones = telefones;
     }
 
-    public String getPais() {
-        return pais;
+    public Cliente() {
     }
-
-    public void setPais(String pais) {
-        this.pais = pais;
-    }
+    
+    
     
 }

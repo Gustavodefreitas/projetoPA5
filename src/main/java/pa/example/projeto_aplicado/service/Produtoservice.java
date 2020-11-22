@@ -41,7 +41,19 @@ public class Produtoservice {
 
     public Produto alterarProduto(long id, Produto produto){
         Produto newproduto = getProdutobyID(id);
-        newproduto.atualizarProduto(produto);
+        
+        if(produto.getCor() != null)
+            newproduto.setCor(produto.getCor());
+        if(produto.getDescricao() != null)
+            newproduto.setDescricao(produto.getDescricao());
+        if(produto.getMarca() != null)
+            newproduto.setMarca(produto.getMarca());
+        if(produto.getPeso() != 0)
+            newproduto.setPeso(produto.getPeso());
+        if(produto.getTipo() != null)
+            newproduto.setTipo(produto.getTipo());   
+        if(produto.getVolume() != 0)
+            newproduto.setVolume(produto.getVolume());       
         
         return produtos.save(newproduto);
   

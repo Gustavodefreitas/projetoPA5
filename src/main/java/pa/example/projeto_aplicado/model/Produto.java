@@ -1,12 +1,15 @@
 package pa.example.projeto_aplicado.model;
 
 import java.io.Serializable;
-
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 
 @Entity
 public class Produto implements Serializable{
@@ -17,40 +20,18 @@ public class Produto implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long idproduto;
-    @Column(nullable = false)
+
     private String descricao;
-    @Column(nullable = false)
     private String tipo;
-    @Column(nullable = false)
     private String marca;
-    @Column(nullable = false)
     private String cor;
-    @Column(nullable = false)
     private float peso;
-    @Column(nullable = false)
     private float volume;
 
-
-    public void atualizarProduto(Produto atual){
-
-        if(atual.getCor() != null)
-            this.cor = atual.getCor();
-        
-        if(atual.getDescricao() != null)
-            this.descricao = atual.getDescricao();
-
-        if(atual.getMarca() != null)
-            this.marca = atual.getMarca();
-
-        if(atual.getVolume() != 0)
-            this.volume = atual.getVolume();  
-        
-        if(atual.getPeso() != 0)
-            this.peso = atual.getPeso();  
-            
-        if(atual.getTipo() != null)
-            this.tipo = atual.getTipo(); 
-    }
+    @JsonBackReference
+    @OneToOne
+    @JoinColumn(name = "estoque_id")
+    private Estoque estoque;
 
     public long getIdproduto() {
         return idproduto;
@@ -108,6 +89,50 @@ public class Produto implements Serializable{
         this.volume = volume;
     }
 
+    public Estoque getEstoque() {
+        return estoque;
+    }
+
+    public void setEstoque(Estoque estoque) {
+        this.estoque = estoque;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (int) (idproduto ^ (idproduto >>> 32));
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Produto other = (Produto) obj;
+        if (idproduto != other.idproduto)
+            return false;
+        return true;
+    }
+
+    public Produto(long idproduto, String descricao, String tipo, String marca, String cor, float peso, float volume,
+            Estoque estoque) {
+        this.idproduto = idproduto;
+        this.descricao = descricao;
+        this.tipo = tipo;
+        this.marca = marca;
+        this.cor = cor;
+        this.peso = peso;
+        this.volume = volume;
+        this.estoque = estoque;
+    }
+
+    public Produto() {
+    }
 
 
 }

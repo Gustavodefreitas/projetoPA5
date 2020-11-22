@@ -39,7 +39,15 @@ public class Estoqueservice {
 
     public Estoque alterarEstoque(long id, Estoque estoque){
         Estoque newestoque = getEstoquebyID(id);
-        newestoque.atualizarEstoque(estoque);
+        
+        if(estoque.getDatadeentrada() != null)
+            newestoque.setDatadeentrada(estoque.getDatadeentrada());
+        if(estoque.getDatadesaida() != null)
+            newestoque.setDatadesaida(estoque.getDatadesaida());
+        if(estoque.getQtdproduto() != 0)
+            newestoque.setQtdproduto(estoque.getQtdproduto());
+        if(estoque.getVolume() != 0)
+            newestoque.setVolume(estoque.getVolume());    
         
         return estoques.save(newestoque);
   

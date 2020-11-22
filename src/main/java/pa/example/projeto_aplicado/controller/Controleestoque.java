@@ -18,9 +18,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 import pa.example.projeto_aplicado.model.Estoque;
 import pa.example.projeto_aplicado.service.Estoqueservice;
 
-@RequestMapping("/estoque")
+@RequestMapping("/estoques")
 @RestController
-public class Controleestoque {
+public class ControleEstoque {
     @Autowired
     private Estoqueservice srvc;
 

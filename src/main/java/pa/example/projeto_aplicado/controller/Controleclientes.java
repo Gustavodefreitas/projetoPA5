@@ -1,5 +1,7 @@
 package pa.example.projeto_aplicado.controller;
 
+
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +18,12 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import pa.example.projeto_aplicado.model.Cliente;
+import pa.example.projeto_aplicado.model.Endereco;
 import pa.example.projeto_aplicado.service.Clienteservice;
 
 @RestController
 @RequestMapping("/clientes")
-public class Controleclientes {
+public class ControleClientes {
     @Autowired
     private Clienteservice srvc;
 
@@ -65,4 +68,12 @@ public class Controleclientes {
         
         return ResponseEntity.ok(cliente);
     }
+
+    @PostMapping("/{idcliente}/enderecos")
+    public ResponseEntity<Void> cadastrarEndereco(@RequestBody Endereco endereco, @PathVariable long idcliente){
+        srvc.salvarEndereco(endereco, idcliente);
+
+        return ResponseEntity.ok().build();
+    }
+
 }

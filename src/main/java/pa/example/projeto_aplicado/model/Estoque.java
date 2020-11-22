@@ -2,13 +2,15 @@ package pa.example.projeto_aplicado.model;
 
 import java.io.Serializable;
 import java.util.Date;
-
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 public class Estoque implements Serializable{
@@ -19,37 +21,18 @@ public class Estoque implements Serializable{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long idestoque;
     
-    @Column(nullable = false)
     private Date datadeentrada;
-    @Column(nullable = false)
     private Date datadesaida;
-    @Column(nullable = false)
-    private int qtdedoproduto;
-    @Column(nullable = false)
     private float volume;
-    @OneToOne
-    private Produto produto;
+    private int qtdproduto;
 
-    @OneToOne
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "cliente_id")
     private Cliente cliente;
-
-
-    public void atualizarEstoque(Estoque atual){
-
-        if(atual.getDatadeentrada() != null)
-            this.datadeentrada = atual.getDatadeentrada();
-        
-        if(atual.getDatadesaida() != null)
-            this.datadesaida = atual.getDatadesaida();
-
-        if(atual.getQtdedoproduto() != 0)
-            this.qtdedoproduto = atual.getQtdedoproduto();
-
-        if(atual.getVolume() != 0)
-            this.volume = atual.getVolume();  
-            
-    }
-
+    
+    @OneToOne(mappedBy = "estoque")
+    private Produto produto;
 
     public long getIdestoque() {
         return idestoque;
@@ -75,14 +58,6 @@ public class Estoque implements Serializable{
         this.datadesaida = datadesaida;
     }
 
-    public int getQtdedoproduto() {
-        return qtdedoproduto;
-    }
-
-    public void setQtdedoproduto(int qtdedoproduto) {
-        this.qtdedoproduto = qtdedoproduto;
-    }
-
     public float getVolume() {
         return volume;
     }
@@ -91,12 +66,12 @@ public class Estoque implements Serializable{
         this.volume = volume;
     }
 
-    public Produto getProduto() {
-        return produto;
+    public int getQtdproduto() {
+        return qtdproduto;
     }
 
-    public void setProduto(Produto produto) {
-        this.produto = produto;
+    public void setQtdproduto(int qtdproduto) {
+        this.qtdproduto = qtdproduto;
     }
 
     public Cliente getCliente() {
@@ -107,5 +82,49 @@ public class Estoque implements Serializable{
         this.cliente = cliente;
     }
 
+    public Produto getProduto() {
+        return produto;
+    }
 
+    public void setProduto(Produto produto) {
+        this.produto = produto;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (int) (idestoque ^ (idestoque >>> 32));
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Estoque other = (Estoque) obj;
+        if (idestoque != other.idestoque)
+            return false;
+        return true;
+    }
+
+    public Estoque(long idestoque, Date datadeentrada, Date datadesaida, float volume, int qtdproduto, Cliente cliente,
+            Produto produto) {
+        this.idestoque = idestoque;
+        this.datadeentrada = datadeentrada;
+        this.datadesaida = datadesaida;
+        this.volume = volume;
+        this.qtdproduto = qtdproduto;
+        this.cliente = cliente;
+        this.produto = produto;
+    }
+
+    public Estoque() {
+    }
+
+    
 }
