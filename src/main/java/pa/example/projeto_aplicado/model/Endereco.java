@@ -28,6 +28,8 @@ public class Endereco implements Serializable{
     private String bairro;
     private String complemento;
     private String cep;
+    private String cidade;
+    private String estado;
     private String pais;
 
     @JsonBackReference
@@ -91,6 +93,22 @@ public class Endereco implements Serializable{
         this.cliente = cliente;
     }
 
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public String getCidade() {
+        return cidade;
+    }
+
+    public void setCidade(String cidade) {
+        this.cidade = cidade;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -114,7 +132,7 @@ public class Endereco implements Serializable{
     }
 
     public Endereco(long idendereco, String rua, int numero, String bairro, String complemento, String cep,
-            Cliente cliente, String pais) {
+            Cliente cliente, String pais, String estado, String cidade) {
         this.idendereco = idendereco;
         this.rua = rua;
         this.numero = numero;
@@ -123,6 +141,8 @@ public class Endereco implements Serializable{
         this.cep = cep;
         this.cliente = cliente;
         this.pais = pais;
+        this.estado = estado;
+        this.cidade = cidade;
     }
 
     public Endereco() {
@@ -135,6 +155,8 @@ public class Endereco implements Serializable{
     public void setPais(String pais) {
         this.pais = pais;
     }
+
+  
 
 
 }

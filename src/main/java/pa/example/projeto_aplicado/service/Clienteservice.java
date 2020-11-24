@@ -1,5 +1,6 @@
 package pa.example.projeto_aplicado.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class Clienteservice {
     @Autowired
     private EnderecoRepository enderecos;
 
-    public Iterable<Cliente> getAllClientes(){
+    public List<Cliente> getAllClientes(){
         return clientes.findAll();
 
     }
@@ -30,6 +31,12 @@ public class Clienteservice {
         Optional<Cliente> op = clientes.findById(id);
 
         return op.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado"));
+    }
+
+    public Endereco getEnderecobyID(long id){
+        Optional<Endereco> op = enderecos.findById(id);
+
+        return op.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Endereco não encontrado"));
     }
 
     public Cliente salvarCliente(Cliente cliente){
@@ -61,5 +68,29 @@ public class Clienteservice {
         endereco.setCliente(cliente);
 
         return enderecos.save(endereco);
+    }
+
+    public Endereco alterarEndereco(long idendereco, Endereco endereco){
+        Endereco newendereco = getEnderecobyID(idendereco);
+
+        if(endereco.getRua() != null)
+            newendereco.setRua(endereco.getRua());
+        if(endereco.getNumero() != 0)
+            newendereco.setNumero(endereco.getNumero());
+        if(endereco.getBairro() != null)
+            newendereco.setBairro(endereco.getBairro());
+        if(endereco.getComplemento() != null)
+            newendereco.setComplemento(endereco.getComplemento());
+        if(endereco.getCep() != null)
+            newendereco.setCep(endereco.getCep());
+        if(endereco.getCidade() != null)
+            newendereco.setCidade(endereco.getCidade());
+        if(endereco.getEstado() != null)
+            newendereco.setEstado(endereco.getEstado());
+        if(endereco.getPais() != null)
+            newendereco.setPais(endereco.getPais());
+
+        return enderecos.save(newendereco);
+  
     }
 }

@@ -2,6 +2,8 @@ package pa.example.projeto_aplicado.controller;
 
 
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,18 +30,18 @@ public class ControleClientes {
     private Clienteservice srvc;
 
     @GetMapping()
-    public ResponseEntity<Iterable<Cliente>> listar_todos_cliente() {
-        Iterable<Cliente> allclientes = srvc.getAllClientes();
+    public ResponseEntity<Iterable<Cliente>> listarAllClientes() {
+        List<Cliente> allclientes = srvc.getAllClientes();
 
-        if (allclientes != null)
-            return ResponseEntity.ok(allclientes);
+        if (allclientes.isEmpty())
+            return ResponseEntity.noContent().build();
         else
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.ok(allclientes);          
 
     }
 
     @GetMapping("/{idcliente}")
-    public ResponseEntity<Cliente> listar_Cliente(@PathVariable("idcliente") long idcliente) {
+    public ResponseEntity<Cliente> listarCliente(@PathVariable("idcliente") long idcliente) {
         Cliente cliente = srvc.getClientebyID(idcliente);
 
         return ResponseEntity.ok(cliente);
@@ -63,17 +65,27 @@ public class ControleClientes {
     }
     
     @PutMapping("/{idcliente}")
-    public ResponseEntity<Cliente> alteraCliente(@PathVariable long idcliente, @RequestBody Cliente cliente){
+    public ResponseEntity<Cliente> alterarCliente(@PathVariable long idcliente, @RequestBody Cliente cliente){
         cliente = srvc.alterarCliente(idcliente, cliente);
         
         return ResponseEntity.ok(cliente);
     }
 
     @PostMapping("/{idcliente}/enderecos")
-    public ResponseEntity<Void> cadastrarEndereco(@RequestBody Endereco endereco, @PathVariable long idcliente){
-        srvc.salvarEndereco(endereco, idcliente);
+    public ResponseEntity<Void> cadastrarEndereco(@RequestBody Endereco endereco, @PathVariable long idcliente, HttpServletRequest request,
+    UriComponentsBuilder builder){
+        endereco = srvc.salvarEndereco(endereco, idcliente);
 
-        return ResponseEntity.ok().build();
+        UriComponents uriComponents = builder.path(request.getRequestURI() + "/" + endereco.getIdendereco()).build();
+
+        return ResponseEntity.created(uriComponents.toUri()).build();
+    }
+
+    @PutMapping("/{idcliente}/enderecos/{idendereco}")
+    public ResponseEntity<Endereco> alterarCliente(@PathVariable long idendereco, @RequestBody Endereco endereco){
+        endereco = srvc.alterarEndereco(idendereco, endereco);
+        
+        return ResponseEntity.ok(endereco);
     }
 
 }

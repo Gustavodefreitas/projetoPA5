@@ -1,6 +1,6 @@
 package pa.example.projeto_aplicado.service;
 
-
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import pa.example.projeto_aplicado.model.Estoque;
+import pa.example.projeto_aplicado.model.ItemEstoque;
 import pa.example.projeto_aplicado.model.Produto;
+import pa.example.projeto_aplicado.repository.ItemEstoquerepository;
 import pa.example.projeto_aplicado.repository.Produtorepository;
 
 @Service
@@ -17,7 +20,13 @@ public class Produtoservice {
     @Autowired
     private Produtorepository produtos;
 
-    public Iterable<Produto> getAllProdutos(){
+    @Autowired
+    private ItemEstoquerepository itensestoque;
+
+    @Autowired
+    private Estoqueservice srvc;
+
+    public List<Produto> getAllProdutos(){
         return produtos.findAll();
 
     }
@@ -29,8 +38,13 @@ public class Produtoservice {
  
     }
 
-    public Produto salvarProduto(Produto produto){
-        return produtos.save(produto);
+    public Produto salvarProduto(Produto produto, Long idestoque, Integer quantidade){
+        Estoque estoque = srvc.getEstoquebyID(idestoque);
+        produto = produtos.save(produto);
+        ItemEstoque itemestoque = new ItemEstoque(estoque, produto, quantidade);
+        itensestoque.save(itemestoque);
+
+        return produto;
     }
 
     public void deletarProdutobyID(long id){

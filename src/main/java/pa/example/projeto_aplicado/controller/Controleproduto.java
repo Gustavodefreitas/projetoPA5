@@ -1,19 +1,17 @@
 package pa.example.projeto_aplicado.controller;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.util.UriComponents;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import pa.example.projeto_aplicado.model.Produto;
 import pa.example.projeto_aplicado.service.Produtoservice;
@@ -25,30 +23,21 @@ public class ControleProduto{
     private Produtoservice srvc;
 
     @GetMapping()
-    public ResponseEntity<Iterable<Produto>> listar_produtos_estoque() {
-        Iterable<Produto> allProdutos = srvc.getAllProdutos();
+    public ResponseEntity<Iterable<Produto>> listarAllProdutos() {
+        List<Produto> allprodutos = srvc.getAllProdutos();
 
-        if (allProdutos != null)
-            return ResponseEntity.ok(allProdutos);
+        if (allprodutos.isEmpty())
+            return ResponseEntity.noContent().build();
         else
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.ok(allprodutos);  
 
     }
 
     @GetMapping("/{idproduto}")
-    public ResponseEntity<Produto> listar_produto(@PathVariable("idproduto") long idproduto) {
+    public ResponseEntity<Produto> listarProduto(@PathVariable("idproduto") long idproduto) {
         Produto produto = srvc.getProdutobyID(idproduto);
 
         return ResponseEntity.ok(produto);
-    }
-
-    @PostMapping()
-    public ResponseEntity<Void> cadastrarProduto(@RequestBody Produto produto, HttpServletRequest request,
-            UriComponentsBuilder builder) {
-        produto = srvc.salvarProduto(produto);
-        UriComponents uriComponents = builder.path(request.getRequestURI() + "/" + produto.getIdproduto()).build();
-
-        return ResponseEntity.created(uriComponents.toUri()).build();
     }
 
     @DeleteMapping("/{idproduto}")
@@ -59,7 +48,7 @@ public class ControleProduto{
     }
     
     @PutMapping("/{idproduto}")
-    public ResponseEntity<Produto> alteraProduto(@PathVariable long idproduto, @RequestBody Produto produto){
+    public ResponseEntity<Produto> alterarProduto(@PathVariable long idproduto, @RequestBody Produto produto){
         produto = srvc.alterarProduto(idproduto, produto);
         
         return ResponseEntity.ok(produto);

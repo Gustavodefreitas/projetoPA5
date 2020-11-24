@@ -1,14 +1,18 @@
 package pa.example.projeto_aplicado.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 @Entity
@@ -28,10 +32,28 @@ public class Produto implements Serializable{
     private float peso;
     private float volume;
 
-    @JsonBackReference
-    @OneToOne
-    @JoinColumn(name = "estoque_id")
-    private Estoque estoque;
+    @JsonIgnore
+    @OneToMany(mappedBy = "id.produto")
+    private Set<ItemEstoque> itens = new HashSet<>();
+
+
+    @JsonIgnore
+    public List<Estoque> getEstoques(){
+        List<Estoque> estoques = new ArrayList<>();
+
+        for(ItemEstoque x : itens)
+            estoques.add(x.getEstoque());
+        
+        return estoques;
+    }
+
+    public Set<ItemEstoque> getItens() {
+        return itens;
+    }
+
+    public void setItens(Set<ItemEstoque> itens) {
+        this.itens = itens;
+    }
 
     public long getIdproduto() {
         return idproduto;
@@ -89,14 +111,6 @@ public class Produto implements Serializable{
         this.volume = volume;
     }
 
-    public Estoque getEstoque() {
-        return estoque;
-    }
-
-    public void setEstoque(Estoque estoque) {
-        this.estoque = estoque;
-    }
-
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -119,8 +133,7 @@ public class Produto implements Serializable{
         return true;
     }
 
-    public Produto(long idproduto, String descricao, String tipo, String marca, String cor, float peso, float volume,
-            Estoque estoque) {
+    public Produto(long idproduto, String descricao, String tipo, String marca, String cor, float peso, float volume) {
         this.idproduto = idproduto;
         this.descricao = descricao;
         this.tipo = tipo;
@@ -128,11 +141,14 @@ public class Produto implements Serializable{
         this.cor = cor;
         this.peso = peso;
         this.volume = volume;
-        this.estoque = estoque;
     }
 
     public Produto() {
     }
+
+    
+
+    
 
 
 }

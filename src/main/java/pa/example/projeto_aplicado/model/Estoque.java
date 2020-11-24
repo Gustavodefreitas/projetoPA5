@@ -2,15 +2,19 @@ package pa.example.projeto_aplicado.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 public class Estoque implements Serializable{
@@ -21,18 +25,18 @@ public class Estoque implements Serializable{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long idestoque;
     
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private Date datadeentrada;
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private Date datadesaida;
-    private float volume;
-    private int qtdproduto;
 
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
     
-    @OneToOne(mappedBy = "estoque")
-    private Produto produto;
+    @OneToMany(mappedBy = "id.estoque")
+    private Set<ItemEstoque> itens = new HashSet<>();
 
     public long getIdestoque() {
         return idestoque;
@@ -58,22 +62,6 @@ public class Estoque implements Serializable{
         this.datadesaida = datadesaida;
     }
 
-    public float getVolume() {
-        return volume;
-    }
-
-    public void setVolume(float volume) {
-        this.volume = volume;
-    }
-
-    public int getQtdproduto() {
-        return qtdproduto;
-    }
-
-    public void setQtdproduto(int qtdproduto) {
-        this.qtdproduto = qtdproduto;
-    }
-
     public Cliente getCliente() {
         return cliente;
     }
@@ -82,12 +70,12 @@ public class Estoque implements Serializable{
         this.cliente = cliente;
     }
 
-    public Produto getProduto() {
-        return produto;
+    public Set<ItemEstoque> getItens() {
+        return itens;
     }
 
-    public void setProduto(Produto produto) {
-        this.produto = produto;
+    public void setItens(Set<ItemEstoque> itens) {
+        this.itens = itens;
     }
 
     @Override
@@ -112,19 +100,13 @@ public class Estoque implements Serializable{
         return true;
     }
 
-    public Estoque(long idestoque, Date datadeentrada, Date datadesaida, float volume, int qtdproduto, Cliente cliente,
-            Produto produto) {
+    public Estoque(long idestoque, Date datadeentrada, Date datadesaida, Cliente cliente) {
         this.idestoque = idestoque;
         this.datadeentrada = datadeentrada;
         this.datadesaida = datadesaida;
-        this.volume = volume;
-        this.qtdproduto = qtdproduto;
         this.cliente = cliente;
-        this.produto = produto;
     }
 
     public Estoque() {
     }
-
-    
 }
