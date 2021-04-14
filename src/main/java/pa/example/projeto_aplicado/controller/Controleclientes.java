@@ -25,7 +25,7 @@ import pa.example.projeto_aplicado.service.Clienteservice;
 
 @RestController
 @RequestMapping("/clientes")
-public class ControleClientes {
+public class Controleclientes {
     @Autowired
     private Clienteservice srvc;
 

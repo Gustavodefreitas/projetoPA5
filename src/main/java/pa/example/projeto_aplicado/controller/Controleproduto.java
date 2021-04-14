@@ -18,7 +18,7 @@ import pa.example.projeto_aplicado.service.Produtoservice;
 
 @RequestMapping("/produtos")
 @RestController
-public class ControleProduto{
+public class Controleproduto{
     @Autowired
     private Produtoservice srvc;
 
